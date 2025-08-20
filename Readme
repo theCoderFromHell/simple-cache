@@ -2,44 +2,38 @@
 
 A lightweight, high-performance Time-To-Live (TTL) cache implementation in Java with elegant design patterns and thread-safe operations.
 
-## ✨ Features
+## Features
 
-- ⏰ **Automatic TTL-based eviction** - Entries automatically expire after specified time
-- 🛡️ **Thread-safe** - Built on `ConcurrentHashMap` for concurrent access
-- 📊 **Statistics tracking** - Monitor cache performance with built-in metrics
-- 🎨 **Design pattern rich** - Builder, Factory, Decorator, and Null Object patterns
-- ⚡ **High performance** - Efficient cleanup with scheduled executor
-- 🔧 **Configurable** - Customizable cleanup intervals and initial capacity
-- 🧪 **Well-tested** - Comprehensive unit test coverage
-- 🎯 **Type-safe** - Generics support for any key-value types
+- **Automatic TTL-based eviction** - Entries automatically expire after specified time
+- **Thread-safe** - Built on `ConcurrentHashMap` for concurrent access
+- **Statistics tracking** - Monitor cache performance with built-in metrics
+- **Design pattern rich** - Builder, Factory, Decorator, and Null Object patterns
+- **High performance** - Efficient cleanup with scheduled executor
+- **Configurable** - Customizable cleanup intervals and initial capacity
+- **Well-tested** - Comprehensive unit test coverage
+- **Type-safe** - Generics support for any key-value types
 
-## 🏗️ Architecture
+## Architecture
 
-```
-Cache Interface → TTLCache Implementation
-                → NullCache Implementation
-                → CacheStatisticsDecorator
-                
-TTLCache → CacheEntry with TTL
-CacheFactory → Creates cache instances
-Builder Pattern → Configures cache parameters
-```
+The cache system follows a clean, layered architecture:
+- **Cache Interface**: Defines the contract for all cache implementations
+- **TTLCache**: Main implementation with TTL eviction
+- **CacheEntry**: Wrapper for values with expiration tracking
+- **Decorators**: Additional functionality like statistics
+- **Factories**: Simplified cache creation
+- **Null Object**: Safe no-operation implementation
 
-## 📦 Installation
+## Installation
 
-Add the source files to your Java project (requires Java 17+):
+Add the source files to your Java project (requires Java 17+). Copy these files:
+- Cache.java
+- CacheEntry.java
+- TTLCache.java
+- CacheFactory.java
+- CacheStatisticsDecorator.java
+- NullCache.java
 
-```bash
-# Copy these files to your project:
-# - Cache.java
-# - CacheEntry.java
-# - TTLCache.java
-# - CacheFactory.java
-# - CacheStatisticsDecorator.java
-# - NullCache.java
-```
-
-## 🚀 Quick Start
+## Quick Start
 
 ```java
 // Simple usage
@@ -49,9 +43,10 @@ cache.put("user:123", "John Doe", 5000); // 5 seconds TTL
 String user = cache.get("user:123"); // Returns "John Doe"
 ```
 
-## 🎯 Usage Examples
+## Usage Examples
 
 ### Basic Cache Operations
+
 ```java
 // Create cache with default settings
 Cache<String, Integer> cache = new TTLCache.Builder().build();
@@ -73,6 +68,7 @@ cache.clear();
 ```
 
 ### Advanced Configuration
+
 ```java
 // Custom cleanup every 2 seconds with larger capacity
 Cache<String, User> cache = new TTLCache.Builder()
@@ -82,6 +78,7 @@ Cache<String, User> cache = new TTLCache.Builder()
 ```
 
 ### Using Factory Pattern
+
 ```java
 // Factory-created cache
 Cache<String, Double> cache = CacheFactory.createDefaultCache();
@@ -92,6 +89,7 @@ Cache<String, Double> fastCleanupCache =
 ```
 
 ### Statistics Tracking
+
 ```java
 // Cache with statistics
 CacheStatisticsDecorator<String, String> cache = 
@@ -108,6 +106,7 @@ System.out.println("Misses: " + stats.getMisses()); // 1
 ```
 
 ### Null Object Pattern
+
 ```java
 // Useful for testing or disabling caching
 Cache<String, String> noOpCache = new NullCache<>();
@@ -115,7 +114,7 @@ noOpCache.put("test", "value", 1000); // Does nothing
 String result = noOpCache.get("test"); // Returns null
 ```
 
-## ⚙️ Configuration Options
+## Configuration Options
 
 | Option | Default | Description |
 |--------|---------|-------------|
@@ -123,20 +122,11 @@ String result = noOpCache.get("test"); // Returns null
 | Initial Capacity | 16 | Initial size of the internal map |
 | Concurrency Level | Default | ConcurrentHashMap concurrency level |
 
-## 🧪 Testing
+## Testing
 
-Run the included unit tests:
+Run the included unit tests using JUnit 5 or compile and run manually.
 
-```bash
-# Using JUnit 5
-./mvnw test
-
-# Or compile and run manually
-javac -cp .:junit-jupiter-api-5.8.2.jar TTLCacheTest.java
-java -cp .:junit-jupiter-api-5.8.2.jar org.junit.runner.JUnitCore TTLCacheTest
-```
-
-## 🏗️ Design Patterns
+## Design Patterns
 
 This implementation showcases several Gang of Four design patterns:
 
@@ -146,16 +136,17 @@ This implementation showcases several Gang of Four design patterns:
 - **Null Object Pattern**: Safe no-operation implementation
 - **Strategy Pattern**: Extensible eviction policies
 
-## 📊 Performance Considerations
+## Performance Considerations
 
 - **Time Complexity**: O(1) for get/put/remove operations
 - **Space Complexity**: O(n) where n is number of entries
 - **Cleanup Overhead**: Configurable background thread with minimal impact
 - **Memory Usage**: Automatic expiration prevents memory leaks
 
-## 🔄 Extending the Cache
+## Extending the Cache
 
 ### Adding New Eviction Policies
+
 ```java
 public class LRUCache<K, V> implements Cache<K, V> {
     // Implement LRU eviction alongside TTL
@@ -163,13 +154,14 @@ public class LRUCache<K, V> implements Cache<K, V> {
 ```
 
 ### Adding Persistence
+
 ```java
 public class PersistentCache<K, V> implements Cache<K, V> {
     // Add disk or database persistence
 }
 ```
 
-## 🚨 Best Practices
+## Best Practices
 
 1. **Choose appropriate TTL** based on data volatility
 2. **Monitor cache statistics** to optimize hit ratios
@@ -177,7 +169,7 @@ public class PersistentCache<K, V> implements Cache<K, V> {
 4. **Consider key serialization** for complex objects
 5. **Always call shutdown()** when application terminates
 
-## 📈 Monitoring
+## Monitoring
 
 ```java
 // Monitor cache health
@@ -189,19 +181,11 @@ monitoredCache.getStatistics().getHitRatio();
 monitoredCache.getStatistics().getHits();
 ```
 
-## 🤝 Contributing
+## License
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+This project is licensed under the MIT License.
 
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🆘 Troubleshooting
+## Troubleshooting
 
 **Q: Entries not expiring?**
 A: Check your cleanup interval configuration
@@ -212,16 +196,10 @@ A: Ensure proper TTL values and consider smaller cleanup intervals
 **Q: Thread contention?**
 A: The cache uses ConcurrentHashMap, but monitor for specific use cases
 
-## 🎓 Learning Resources
+## Learning Resources
 
-- [Java Concurrency in Practice](https://jcip.net/)
-- [Effective Java](https://www.oreilly.com/library/view/effective-java/9780134686097/)
-- [Design Patterns: Elements of Reusable Object-Oriented Software](https://www.oreilly.com/library/view/design-patterns-elements/0201633612/)
+- Java Concurrency in Practice
+- Effective Java
+- Design Patterns: Elements of Reusable Object-Oriented Software
 
----
-
-**⭐ Star this project if you found it useful!**
-
----
-
-*Built with ❤️ and Java*
+Built with Java
